@@ -8,21 +8,26 @@ output:
 
 ## 1. Loading and preprocessing the data
 
-```{r}
+
+```r
 activityData <- read.csv("activity.csv")
 activityData <- transform(activityData, date = as.Date(date, "%Y-%m-%d"))
 ```
 
 ## 2. What is mean total number of steps taken per day?
-```{r}
+
+```r
 tidyData <- activityData[!is.na(activityData$date) & !is.na(activityData$steps),]
 histData <- tapply(tidyData$steps, tidyData$date, sum)
 plot(as.Date(names(histData)), histData, type = "h", xlab = "Date", ylab = "Total Steps taken per day")
 ```
 
+![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2.png) 
+
 
 ## 3. What is the average daily activity pattern?
-```{r}
+
+```r
 meanSteps <- mean(histData)
 medianSteps <- median(histData)
 
@@ -31,9 +36,12 @@ plotData <- tapply(tidyData$steps, tidyData$interval, mean)
 plot(names(plotData), plotData, type= "l", xlab = "Interval", ylab = "Average Steps")
 ```
 
+![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3.png) 
+
 ## 4. Imputing missing values
 
-```{r}
+
+```r
 activityData <- cbind(activityData, dayOfWeek = weekdays(activityData$date))
 names(activityData)[4] <- "dayOfWeek" 
 
@@ -51,7 +59,8 @@ tidy2Data <- NAVar[,c("steps", "date", "interval")]
 
 
 ## 5. Are there differences in activity patterns between weekdays and weekends?
-```{r}
+
+```r
 weekDay <- c("weekday")
 NAVar <- cbind(NAVar, weekDay)
 NAVar$weekDay <- as.character(NAVar$weekDay)
@@ -75,5 +84,7 @@ g +
         theme(panel.grid = element_blank()) +
         theme(strip.background = element_rect(fill = "red"))
 ```
+
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5.png) 
 
 
